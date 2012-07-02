@@ -23,6 +23,9 @@ PHP utils to analyze generated files from xdebug profiler and trace.
 	# display report table with 20% most slow methods
 	> ./xdebug profiler -t 20% /var/data/path-to-folder-with-cachegrind-files/
 
+**Example of output:**
+
+![Example of xdebug profiler output](http://i.imgur.com/N6nsx.png)
 
 ## Xdebug Trace
 
