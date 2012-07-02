@@ -2,7 +2,7 @@
 
 PHP utils to analyze generated files from xdebug profiler and trace.
 
-## Xdebug Proler
+## Xdebug Profiler
 
 	./xdebug profiler [--top 10] [--report report.csv] [--format csv] file1 [ file2 [ folder]]
 
