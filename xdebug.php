@@ -9,5 +9,5 @@ include_once('./utils/Getopt.php');
 include_once('./commands/Profiler.php');
 
 
-$dispatcher = new CommandDispatcher($argv);
+$dispatcher = new CommandDispatcher($argv, 'profiler');
 $dispatcher->dispatch();

@@ -7,16 +7,16 @@ class CommandDispatcher
 	protected $options;
 	protected $script;
 
-	public function __construct($arguments)
+	public function __construct($arguments, $defaultTarget)
 	{
-		$this->setArguments($arguments);
+		$this->setArguments($arguments, $defaultTarget);
 	}
 
-	public function setArguments($arguments)
+	public function setArguments($arguments, $defaultTarget)
 	{
 		$this->arguments = $arguments;
 		$this->script = array_shift($arguments);
-		$this->target = array_shift($arguments);
+		$this->target = isset($arguments[0]) && class_exists(ucfirst($arguments[0])) ? array_shift($arguments) : $defaultTarget;
 		$this->options = $arguments;
 	}
 
