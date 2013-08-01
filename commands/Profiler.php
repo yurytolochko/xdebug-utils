@@ -157,7 +157,7 @@ class Profiler extends Command
 			));
 		}
 
-		fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
+        fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
 
         fwrite($out, sprintf($format,
 			'Total',
