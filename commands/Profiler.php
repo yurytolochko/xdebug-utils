@@ -133,8 +133,8 @@ class Profiler extends Command
 			if (strlen($function) > $maxFunctionName)
 				$maxFunctionName = strlen($function);
 		}
-		if ($maxFunctionName > 40)
-			$maxFunctionName = 40;
+		if ($maxFunctionName > 60)
+			$maxFunctionName = 60;
 
 		$format = "| %-{$maxFunctionName}s | %11s | %9s | %9s | %13s | %10s | %14s |" . PHP_EOL;
 
