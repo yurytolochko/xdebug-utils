@@ -57,6 +57,7 @@ class Profiler extends Command
 			throw new Exception('Unknown format: ' . $format);
 
 		$functions = $this->getFunctions($files);
+        $totals = $this->getTotals($functions);
 		if (!empty($top)) {
 			if (rtrim($top, '%') != $top) {
 				$top = rtrim($top, '%');
@@ -69,7 +70,7 @@ class Profiler extends Command
 		if ($format == self::FORMAT_CSV) {
 			$this->formatCsv($report, $functions);
 		} elseif ($format == self::FORMAT_TABLE) {
-			$this->formatTable($report, $functions);
+			$this->formatTable($report, $functions, $totals);
 		}
 	}
 
@@ -126,7 +127,7 @@ class Profiler extends Command
 		fclose($out);
 	}
 
-	protected function formatTable($report, $functions)
+	protected function formatTable($report, $functions, $totals)
 	{
 		$maxFunctionName = 0;
 		foreach(array_keys($functions) as $function) {
@@ -158,6 +159,18 @@ class Profiler extends Command
 
 		fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
 
+        fwrite($out, sprintf($format,
+			'Total',
+			$totals['invocationCount'],
+			'100%',
+			round($totals['cost'] / 1000, 2) . 'ms',
+			'',
+			'',
+			''
+		));
+
+        fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
+
 		fclose($out);
  	}
 
@@ -178,4 +191,15 @@ class Profiler extends Command
 		}
 		return $functions;
 	}
+
+    protected function getTotals($functions)
+    {
+        $total = array('cost' => 0, 'invocationCount' => 0);
+        $totalInvocationCount = 0;
+    	foreach($functions as $function => $summary) {
+            $total['cost'] += $summary['summedSelfCost'];
+            $total['invocationCount'] += $summary['invocationCount'];
+    	}
+        return $total;
+    }
 }
