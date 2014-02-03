@@ -117,6 +117,7 @@ class Profiler extends Command
 			fputcsv($out, array(
 				$function,
 				$summary['invocationCount'],
+				$summary['summedInclusiveCostPercentage'],
 				$summary['selfCostPercentage'],
 				round($summary['summedSelfCost'] / 1000, 2),
 				round($summary['avgSelfCost'] / 1000, 2),
@@ -137,18 +138,19 @@ class Profiler extends Command
 		if ($maxFunctionName > 60)
 			$maxFunctionName = 60;
 
-		$format = "| %-{$maxFunctionName}s | %11s | %9s | %9s | %13s | %10s | %14s |" . PHP_EOL;
+		$format = "| %-{$maxFunctionName}s | %11s | %11s | %9s | %9s | %13s | %10s | %14s |" . PHP_EOL;
 
 		$out = fopen($report, 'w');
 
-		fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
-		fwrite($out, sprintf($format, 'Method', 'Invocations', 'Self Cost', 'Self Cost', 'Avg Self Cost', 'Incl. Cost', 'Avg Incl. Cost'));
-		fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
+		fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
+		fwrite($out, sprintf($format, 'Method', 'Invocations', 'Incl Cost %', 'Self Cost', 'Self Cost', 'Avg Self Cost', 'Incl. Cost', 'Avg Incl. Cost'));
+		fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
 
 		foreach($functions as $function => $summary) {
 			fwrite($out, sprintf($format,
 				substr($function, 0, $maxFunctionName),
 				$summary['invocationCount'],
+				$summary['summedInclusiveCostPercentage'] . '%',
 				$summary['selfCostPercentage'] . '%',
 				round($summary['summedSelfCost'] / 1000, 2) . 'ms',
 				round($summary['avgSelfCost'] / 1000, 2) . 'ms',
@@ -157,11 +159,12 @@ class Profiler extends Command
 			));
 		}
 
-        fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
+        fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
 
         fwrite($out, sprintf($format,
 			'Total',
 			$totals['invocationCount'],
+			'100%',
 			'100%',
 			round($totals['cost'] / 1000, 2) . 'ms',
 			'',
@@ -169,7 +172,7 @@ class Profiler extends Command
 			''
 		));
 
-        fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
+        fwrite($out, sprintf($format, str_repeat('-', $maxFunctionName), str_repeat('-', 11),str_repeat('-', 11), str_repeat('-', 9), str_repeat('-', 9), str_repeat('-', 13), str_repeat('-', 10), str_repeat('-', 14)));
 
 		fclose($out);
  	}

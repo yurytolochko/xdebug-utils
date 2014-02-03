@@ -81,6 +81,7 @@ class CacheGrind
 			$this->functions[$function]['avgSelfCost'] = ceil($statistic['summedSelfCost'] / $statistic['invocationCount']);
 			$this->functions[$function]['avgInclusiveCost'] = ceil($statistic['summedInclusiveCost'] / $statistic['invocationCount']);
 			$this->functions[$function]['selfCostPercentage'] = round($statistic['summedSelfCost'] / $totalTime * 100, 2);
+			$this->functions[$function]['summedInclusiveCostPercentage'] = round($statistic['summedInclusiveCost'] / $totalTime * 100, 2);
 		}
 	}
 
